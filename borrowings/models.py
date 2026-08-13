@@ -12,7 +12,9 @@ class Borrowing(models.Model):
         Book, related_name="borrowings", on_delete=models.CASCADE
     )
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="borrowings", on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL,
+        related_name="borrowings",
+        on_delete=models.CASCADE,
     )
 
     class Meta:

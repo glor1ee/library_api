@@ -34,13 +34,12 @@ class PaymentSuccessView(APIView):
             payment.status = Payment.Status.PAID
             payment.save()
 
-        return Response(
-            {
-                "status": payment.status,
-                "message": "Payment successful." if payment.status == Payment.Status.PAID
-                else "Payment is still pending.",
-            }
-        )
+        if payment.status == Payment.Status.PAID:
+            message = "Payment successful."
+        else:
+            message = "Payment is still pending."
+
+        return Response({"status": payment.status, "message": message})
 
 
 class PaymentCancelView(APIView):

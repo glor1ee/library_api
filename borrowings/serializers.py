@@ -47,7 +47,9 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs["book"].inventory < 1:
-            raise serializers.ValidationError({"book": "This book is out of stock."})
+            raise serializers.ValidationError(
+                {"book": "This book is out of stock."}
+            )
         if attrs["expected_return_date"] <= timezone.localdate():
             raise serializers.ValidationError(
                 {"expected_return_date": "Must be a date after today."}
@@ -68,11 +70,13 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
             payment_type=Payment.Type.PAYMENT,
             money_to_pay=book.daily_fee * max(days, 1),
         )
-        payment.session_url, payment.session_id = stripe_utils.create_checkout_session(
-            payment
-        )
+        session_url, session_id = stripe_utils.create_checkout_session(payment)
+        payment.session_url = session_url
+        payment.session_id = session_id
         payment.save()
 
-        async_task("notifications.tasks.notify_borrowing_created", borrowing.id)
+        async_task(
+            "notifications.tasks.notify_borrowing_created", borrowing.id
+        )
 
         return borrowing

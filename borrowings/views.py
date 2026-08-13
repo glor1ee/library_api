@@ -67,16 +67,21 @@ class BorrowingViewSet(
             overdue_days = (
                 borrowing.actual_return_date - borrowing.expected_return_date
             ).days
+            fine_amount = (
+                borrowing.book.daily_fee
+                * overdue_days
+                * settings.FINE_MULTIPLIER
+            )
             fine = Payment.objects.create(
                 borrowing=borrowing,
                 payment_type=Payment.Type.FINE,
-                money_to_pay=(
-                    borrowing.book.daily_fee * overdue_days * settings.FINE_MULTIPLIER
-                ),
+                money_to_pay=fine_amount,
             )
-            fine.session_url, fine.session_id = stripe_utils.create_checkout_session(
+            session_url, session_id = stripe_utils.create_checkout_session(
                 fine
             )
+            fine.session_url = session_url
+            fine.session_id = session_id
             fine.save()
 
         return Response(BorrowingDetailSerializer(borrowing).data)

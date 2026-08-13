@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 def create_checkout_session(payment):
     if not settings.STRIPE_SECRET_KEY:
         logger.warning(
-            "STRIPE_SECRET_KEY is not configured; skipping Stripe session creation."
+            "STRIPE_SECRET_KEY is not configured; "
+            "skipping Stripe session creation."
         )
         return "", ""
 
@@ -21,7 +22,10 @@ def create_checkout_session(payment):
                 "price_data": {
                     "currency": "usd",
                     "product_data": {
-                        "name": f"Borrowing #{payment.borrowing_id} ({payment.payment_type})"
+                        "name": (
+                            f"Borrowing #{payment.borrowing_id} "
+                            f"({payment.payment_type})"
+                        )
                     },
                     "unit_amount": int(payment.money_to_pay * 100),
                 },

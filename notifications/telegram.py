@@ -15,7 +15,9 @@ def send_telegram_message(text):
         )
         return
 
-    url = f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}/sendMessage"
-    requests.post(
-        url, data={"chat_id": settings.TELEGRAM_CHAT_ID, "text": text}, timeout=10
+    url = (
+        f"https://api.telegram.org/bot{settings.TELEGRAM_BOT_TOKEN}"
+        "/sendMessage"
     )
+    data = {"chat_id": settings.TELEGRAM_CHAT_ID, "text": text}
+    requests.post(url, data=data, timeout=10)

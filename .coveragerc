@@ -1,0 +1,14 @@
+[run]
+source = .
+omit =
+    .venv/*
+    */migrations/*
+    manage.py
+    */apps.py
+    library_service_api/asgi.py
+    library_service_api/wsgi.py
+    */tests/*
+    */management/commands/wait_for_db.py
+
+[report]
+skip_empty = True

@@ -1,0 +1,9 @@
+Django==6.1
+djangorestframework==3.18.0
+djangorestframework-simplejwt==5.5.1
+drf-spectacular==0.30.0
+psycopg2-binary==2.9.12
+coverage==7.11.3
+django-q2==1.10.0
+stripe==11.4.1
+requests==2.32.3

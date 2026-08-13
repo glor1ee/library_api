@@ -47,17 +47,12 @@ notifications/            # Telegram sending helper + async notification tasks
 
 ## Getting started
 
-Migration files are not committed to this repo (only the empty
-`migrations/__init__.py` per app), so `makemigrations` has to be run
-before `migrate` on a fresh clone.
-
 ### Option A - plain Python (SQLite, no Docker)
 
 ```bash
 python -m venv .venv
 .venv\Scripts\activate        # Windows
 pip install -r requirements.txt
-python manage.py makemigrations
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
@@ -87,8 +82,8 @@ docker compose up --build
 ```
 
 This starts the API, PostgreSQL, and a `qcluster` worker. The `app`
-service generates and applies migrations and registers the daily
-schedule automatically on startup.
+service applies migrations and registers the daily schedule
+automatically on startup.
 
 ```bash
 docker compose exec app python manage.py createsuperuser
